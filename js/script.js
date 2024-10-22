@@ -1,22 +1,25 @@
 
-var gameboard = {
-    board: [],
-    init: function(){
-        this.board=[['','',''],['','',''],['','','']];
-    },
-    addMark: function(row,column,mark){
-        this.board[row][column] = mark;
-    },
-    getBoard: function(){
-        return this.board;
-    },
-    
-}
+const gameboard = (function (){
+   let board= [['','',''],['','',''],['','','']];
+
+   function addMark(row,column,mark){
+        board[row][column] = mark;
+    }
+
+    function getBoard(){
+        return board;
+    }
+
+    return{getBoard,addMark}
+})()
+
+
+
 
 const gameController =  (function (){
-    let boardGame = gameboard;
+    let boardGame = gameboard.getBoard();
     function printBoard(){
-        console.log(gameboard.getBoard())
+        console.log(boardGame)
     }
     let players = [
         {
@@ -33,7 +36,6 @@ const gameController =  (function (){
     return {printBoard, activePlayer}
 })();
 
+console.log(gameboard.getBoard());
 gameController.printBoard();
-console.log(gameController.activePlayer)
-
 
