@@ -17,10 +17,12 @@ const gameboard = (function (){
 
 
 const gameController =  (function (){
-    let boardGame = gameboard.getBoard();
+    let boardGame = gameboard;
+
     function printBoard(){
-        console.log(boardGame)
+        console.table(boardGame.getBoard())
     }
+
     let players = [
         {
             name: 'Player One',
@@ -32,10 +34,14 @@ const gameController =  (function (){
         }
     ]
     let activePlayer = players[0];
-
-    return {printBoard, activePlayer}
+    
+    function playerTurn(row,column){
+        console.log(activePlayer.mark)
+        boardGame.addMark(row,column,activePlayer.mark);
+        printBoard();
+    }
+    return {printBoard,playerTurn,boardGame}
 })();
 
-console.log(gameboard.getBoard());
-gameController.printBoard();
+
 
