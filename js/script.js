@@ -3,8 +3,10 @@ const gameboard = (function (){
    let board= [['','',''],['','',''],['','','']];
 
    function addMark(row,column,mark){
-        if(verifyMove(row,column)){
+    let validMove = verifyMove(row,column)
+        if(validMove){
             board[row][column] = mark;
+            checkWinCondition();
             return true
         }else{
             return false
@@ -22,6 +24,32 @@ const gameboard = (function (){
             return false
         }
     }
+
+    function checkWinCondition(){
+        console.log("Check win conditions");
+        for(let i =0; i < board.length; i++){
+
+
+                if(board[i][0] !== '' && board[i][1] !== '' && board[i][2] !== ''){
+                    if(((board[i][0] === board[i][1]) && (board[i][1] === board[i][2]))){
+                        console.log("win row")
+                        return true
+                }}else if(board[0][i] !== '' && board[0][i] !== '' && board[0][i] !== ''){
+                    if((board[0][i] === board[1][i]) && (board[1][i] === board[2][i])){
+                        console.log("win column")
+                    }
+                }else if(board[0][0] !== '' && board[1][1] !== '' && board[2][2] !== ''){
+                    if((board[0][0] === board[1][1]) && (board[1][1] === board[2][2])){
+                        console.log("win diagnoal")
+                    }
+                }else if(board[2][0] !== '' && board[1][1] !== '' && board[0][2] !== ''){
+                    if((board[2][0] === board[1][1]) && (board[1][1] === board[0][2])){
+                        console.log("win diagnoal 2")
+                    }
+                }
+            
+    }
+}
 
     return{getBoard,addMark}
 })()
