@@ -37,6 +37,10 @@ body{
     width: 250px;
     height:250px;
     background-color: var(--light-color);
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    font-size:90px;
    
 }
 

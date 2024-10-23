@@ -58,11 +58,24 @@ const gameboard = (function (){
 })()
 
 
+const displayController = (function(){
+    const mapBoardToDom = [['.tl','.tm','.tr'],['.ml','.mm','.mr'],['.bl','.bm','.br']];
+    
+    //Map to DOM
+    function render(row,column,mark){
+        console.log(mapBoardToDom[row][column])
+        gridSelect = mapBoardToDom[row][column];
+        document.querySelector(gridSelect).textContent = mark;
+    }
+
+    return {render}
+})();
 
 
 const gameController =  (function (){
     let boardGame = gameboard;
     let win = false;
+    let renderController = displayController;
     function printBoard(){
         console.table(boardGame.getBoard())
     }
@@ -83,7 +96,12 @@ const gameController =  (function (){
     function playerTurn(row,column){
         
         validMove=boardGame.addMark(row,column,activePlayer.mark);
-        switchPlayer(row,column,validMove);
+        if(validMove){
+            renderController.render(row,column,activePlayer.mark);
+            switchPlayer(row,column);
+            
+        }
+        validMove
         printBoard();
         win = boardGame.getWinState();
         console.log(win)
@@ -92,10 +110,8 @@ const gameController =  (function (){
         }
     }
 
-    function switchPlayer(row,column,validMove){
-        if(validMove){
+    function switchPlayer(row,column){
         activePlayer = (activePlayer.name === players[0].name) ? players[1] : players[0];
-        }
     }
     return {printBoard,playerTurn,boardGame}
 })();
