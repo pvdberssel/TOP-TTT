@@ -68,7 +68,7 @@ const displayController = (function(){
         document.querySelector(gridSelect).textContent = mark;
     }
 
-    return {render}
+    return {render, mapBoardToDom}
 })();
 
 
@@ -76,6 +76,12 @@ const gameController =  (function (){
     let boardGame = gameboard;
     let win = false;
     let renderController = displayController;
+
+    let gridComponents = document.querySelectorAll(".gridcomponent");
+    gridComponents.forEach((grid) => {
+        grid.addEventListener('click', () => getGridPosition(grid.className));
+    })
+
     function printBoard(){
         console.table(boardGame.getBoard())
     }
@@ -94,24 +100,43 @@ const gameController =  (function (){
     let activePlayer = players[0];
     
     function playerTurn(row,column){
-        
+        if(!win){
         validMove=boardGame.addMark(row,column,activePlayer.mark);
         if(validMove){
             renderController.render(row,column,activePlayer.mark);
             switchPlayer(row,column);
             
         }
-        validMove
         printBoard();
         win = boardGame.getWinState();
-        console.log(win)
-        if(win){
-            console.log("GAME DONE")
+        alertWin(win);
         }
     }
 
+    function getGridPosition(gridClass){
+
+        gridIndex = '.' + gridClass.split('gridcomponent ')[1];
+        console.log(gridIndex)
+        for(let i = 0; i<3; i++){
+            for(let j = 0; j< 3; j++){
+                if(gridIndex === renderController.mapBoardToDom[i][j]){
+                    row = i;
+                    column = j;
+                }
+            }
+        }
+        playerTurn(row,column)
+
+    }
     function switchPlayer(row,column){
         activePlayer = (activePlayer.name === players[0].name) ? players[1] : players[0];
+    }
+
+    function alertWin(win){
+        if(win){
+          alert('Win')
+            
+        }
     }
     return {printBoard,playerTurn,boardGame}
 })();
