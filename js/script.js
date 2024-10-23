@@ -33,13 +33,20 @@ const gameController =  (function (){
             mark: '0'
         }
     ]
+    
     let activePlayer = players[0];
     
     function playerTurn(row,column){
-        console.log(activePlayer.mark)
         boardGame.addMark(row,column,activePlayer.mark);
+        switchPlayer();
         printBoard();
     }
+
+    function switchPlayer(){
+        activePlayer = (activePlayer.name === players[0].name) ? players[1] : players[0];
+    }
+
+    
     return {printBoard,playerTurn,boardGame}
 })();
 
