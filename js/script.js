@@ -1,12 +1,13 @@
 
 const gameboard = (function (){
    let board= [['','',''],['','',''],['','','']];
-
+   let win = false;
    function addMark(row,column,mark){
     let validMove = verifyMove(row,column)
         if(validMove){
             board[row][column] = mark;
-            checkWinCondition();
+            win = checkWinCondition();
+            console.log(win);
             return true
         }else{
             return false
@@ -15,6 +16,10 @@ const gameboard = (function (){
 
     function getBoard(){
         return board;
+    }
+
+    function getWinState(){
+        return win;
     }
 
     function verifyMove(row,column){
@@ -26,32 +31,30 @@ const gameboard = (function (){
     }
 
     function checkWinCondition(){
-        console.log("Check win conditions");
         for(let i =0; i < board.length; i++){
-
-
                 if(board[i][0] !== '' && board[i][1] !== '' && board[i][2] !== ''){
                     if(((board[i][0] === board[i][1]) && (board[i][1] === board[i][2]))){
-                        console.log("win row")
                         return true
                 }}else if(board[0][i] !== '' && board[0][i] !== '' && board[0][i] !== ''){
                     if((board[0][i] === board[1][i]) && (board[1][i] === board[2][i])){
-                        console.log("win column")
+                        return true
                     }
                 }else if(board[0][0] !== '' && board[1][1] !== '' && board[2][2] !== ''){
                     if((board[0][0] === board[1][1]) && (board[1][1] === board[2][2])){
-                        console.log("win diagnoal")
+                        return true
                     }
                 }else if(board[2][0] !== '' && board[1][1] !== '' && board[0][2] !== ''){
                     if((board[2][0] === board[1][1]) && (board[1][1] === board[0][2])){
-                        console.log("win diagnoal 2")
+                        return true
                     }
+                }else{
+                    return false
                 }
             
     }
 }
 
-    return{getBoard,addMark}
+    return{getBoard, addMark, getWinState}
 })()
 
 
@@ -59,7 +62,7 @@ const gameboard = (function (){
 
 const gameController =  (function (){
     let boardGame = gameboard;
-
+    let win = false;
     function printBoard(){
         console.table(boardGame.getBoard())
     }
@@ -78,9 +81,15 @@ const gameController =  (function (){
     let activePlayer = players[0];
     
     function playerTurn(row,column){
+        
         validMove=boardGame.addMark(row,column,activePlayer.mark);
         switchPlayer(row,column,validMove);
         printBoard();
+        win = boardGame.getWinState();
+        console.log(win)
+        if(win){
+            console.log("GAME DONE")
+        }
     }
 
     function switchPlayer(row,column,validMove){
@@ -88,8 +97,6 @@ const gameController =  (function (){
         activePlayer = (activePlayer.name === players[0].name) ? players[1] : players[0];
         }
     }
-
-
     return {printBoard,playerTurn,boardGame}
 })();
 
