@@ -67,11 +67,13 @@ const displayController = (function(){
         document.querySelector(gridSelect).textContent = mark;
     }
 
-    function reset(){
 
+    function resetBoard(gridComponents){
+        console.log('joe')
+        gridComponents.forEach((grid) => grid.textContent = '')
     }
 
-    return {render, reset, mapBoardToDom}
+    return {render, resetBoard, mapBoardToDom}
 })();
 
 
@@ -83,6 +85,10 @@ const gameController =  (function (){
     let gridComponents = document.querySelectorAll(".gridcomponent");
     gridComponents.forEach((grid) => {
         grid.addEventListener('click', () => getGridPosition(grid.className));
+    })
+
+    document.querySelector('.reset').addEventListener('click', () => {
+        renderController.resetBoard(gridComponents);
     })
 
     function printBoard(){
@@ -112,7 +118,6 @@ const gameController =  (function (){
         }
         printBoard();
         win = boardGame.getWinState();
-        alertWin(win);
         }
     }
 
@@ -131,13 +136,14 @@ const gameController =  (function (){
         playerTurn(row,column)
 
     }
-    function switchPlayer(row,column){
+    function switchPlayer(){
         activePlayer = (activePlayer.name === players[0].name) ? players[1] : players[0];
     }
 
     function alertWin(win){
         if(win){
-          alert('Win')
+          switchPlayer()
+          alert(`${activePlayer.name} Wins`);
             
         }
     }
