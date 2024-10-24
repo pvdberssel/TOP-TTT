@@ -26,8 +26,16 @@ const gameboard = (function (){
         if(row<3 && column<3 &&((board[row][column] === ''))){
             return true
         }else{
+            function resetArrayBoard(){
+                console.log('joe')
+                boardGame.board = [['','',''],['','',''],['','','']];
+            }
             return false
         }
+    }
+
+    function resetBoardArray(){
+        board= [['','',''],['','',''],['','','']];
     }
 
     function checkWinCondition(){
@@ -53,7 +61,7 @@ const gameboard = (function (){
     }
 }
 
-    return{getBoard, addMark, getWinState}
+    return{getBoard, addMark, getWinState, resetBoardArray}
 })()
 
 
@@ -89,6 +97,9 @@ const gameController =  (function (){
 
     document.querySelector('.reset').addEventListener('click', () => {
         renderController.resetBoard(gridComponents);
+        gameboard.resetBoardArray();
+        activePlayer = players[0];
+        win = false;
     })
 
     function printBoard(){
@@ -118,6 +129,7 @@ const gameController =  (function (){
         }
         printBoard();
         win = boardGame.getWinState();
+        alertWin(win);
         }
     }
 
@@ -147,6 +159,7 @@ const gameController =  (function (){
             
         }
     }
+
     return {printBoard,playerTurn,boardGame}
 })();
 
