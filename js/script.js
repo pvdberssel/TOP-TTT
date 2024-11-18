@@ -26,10 +26,7 @@ const gameboard = (function (){
         if(row<3 && column<3 &&((board[row][column] === ''))){
             return true
         }else{
-            function resetArrayBoard(){
-                console.log('joe')
-                boardGame.board = [['','',''],['','',''],['','','']];
-            }
+    
             return false
         }
     }
@@ -91,6 +88,9 @@ const gameController =  (function (){
     let renderController = displayController;
 
     let gridComponents = document.querySelectorAll(".gridcomponent");
+
+    let currentStatus = document.querySelector(".current-state");
+
     gridComponents.forEach((grid) => {
         grid.addEventListener('click', () => getGridPosition(grid.className));
     })
@@ -150,17 +150,18 @@ const gameController =  (function (){
     }
     function switchPlayer(){
         activePlayer = (activePlayer.name === players[0].name) ? players[1] : players[0];
+        currentStatus.textContent = `${activePlayer.name}'s turn`
     }
 
     function alertWin(win){
         if(win){
           switchPlayer()
-          alert(`${activePlayer.name} Wins`);
+          currentStatus.textContent = `${activePlayer.name} Wins`
             
         }
     }
 
-    return {printBoard,playerTurn,boardGame}
+    return {printBoard, playerTurn,boardGame}
 })();
 
 
